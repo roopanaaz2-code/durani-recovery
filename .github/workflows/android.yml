@@ -12,6 +12,9 @@ jobs:
     name: Build & Package Android APK
     runs-on: ubuntu-latest
 
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx3584m -Dorg.gradle.parallel=false -Dorg.gradle.configuration-cache=false"
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -21,23 +24,37 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'gradle'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK Licenses & Install Android 36 SDK
+        run: |
+          # Use pre-installed Android SDK on GitHub Actions runner
+          export ANDROID_SDK_ROOT=$ANDROID_HOME
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          
+          # Accept all licenses
+          yes | sdkmanager --licenses || true
+          
+          # Install compileSdk 36 / 36.1 and build tools required by AGP
+          sdkmanager --install "platforms;android-36" "platforms;android-36.1" "build-tools;36.0.0" || true
 
       - name: Prepare Secrets & Debug Keystore
         run: |
           # Ensure .env exists so secrets-gradle-plugin succeeds
           if [ -f .env.example ] && [ ! -f .env ]; then
             cp .env.example .env
-          else
+          elif [ ! -f .env ]; then
             touch .env
           fi
 
-          # Decode debug.keystore from base64 if present and not already generated
-          if [ -f debug.keystore.base64 ] && [ ! -f debug.keystore ]; then
-            base64 -d debug.keystore.base64 > debug.keystore
+          # Decode debug.keystore from base64 if present
+          if [ -f debug.keystore.base64 ] && [ ! -s debug.keystore ]; then
+            base64 -d debug.keystore.base64 > debug.keystore || true
+          fi
+
+          # Fallback: Generate a fresh standard debug keystore if missing or empty
+          if [ ! -s debug.keystore ]; then
+            echo "Generating debug keystore..."
+            keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -keypass android -storepass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
           fi
 
           # Ensure gradlew has executable permissions
@@ -48,7 +65,7 @@ jobs:
 
       - name: Build Debug APK
         run: |
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleDebug --no-daemon --no-configuration-cache --stacktrace
 
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
