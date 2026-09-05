@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DURANI RECOVERY</string>
+    <string name="nav_scanner">Scanner</string>
+    <string name="nav_results">Results</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_limitations">Limitations</string>
+    <string name="grant_permissions">Grant Storage Access</string>
+    <string name="storage_permission_rationale">Durani Recovery requires access to device storage to genuinely inspect headers and detect recoverable deleted media candidates.</string>
+</resources>

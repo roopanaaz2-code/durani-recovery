@@ -1,0 +1,7 @@
+{
+  "name": "DURANI RECOVERY",
+  "description": "Professional, transparent, real data recovery and storage analysis tool for photos, videos, and audio.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
