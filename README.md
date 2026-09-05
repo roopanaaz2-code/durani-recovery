@@ -4,22 +4,21 @@ A transparent, zero-simulation forensic media recovery and deleted file carving 
 
 ---
 
-## 🚀 How to Download the APK via GitHub Actions
+## 🚀 How to Download & Install the APK on Android
 
-A continuous integration workflow is configured in `.github/workflows/android.yml`.
+### Method 1: Direct APK Download via GitHub Releases (Recommended)
+1. Go to: **[https://github.com/roopanaaz2-code/durani-recovery/releases](https://github.com/roopanaaz2-code/durani-recovery/releases)**
+2. Under the latest release, click on **`durani-recovery.apk`**.
+3. The APK downloads directly to your Android device (no ZIP extraction needed).
+4. Tap the downloaded file to install!
 
-### Step 1: Push to GitHub or Run Manually
-Whenever you push code to GitHub:
-1. Go to your repository on **GitHub**.
-2. Click on the **Actions** tab at the top.
-3. You will see the workflow: **"Build Durani Recovery APK"**.
-   - If you want to trigger it manually without pushing, click on **Build Durani Recovery APK** in the left sidebar, click **Run workflow**, and select your branch.
+---
 
-### Step 2: Download Your Built APK
-1. Click on the latest workflow run.
-2. Scroll down to the **Artifacts** section at the bottom of the summary page.
-3. Click on **`Durani-Recovery-Debug-APK`** to download the ZIP file containing your installable `.apk`.
-4. Extract the ZIP and install the `.apk` on your Android phone or tablet.
+### Method 2: Download from GitHub Actions
+1. Open your workflow run: [Workflow Runs](https://github.com/roopanaaz2-code/durani-recovery/actions)
+2. Scroll to the **Artifacts** section at the bottom.
+3. Tap **`Durani-Recovery-Debug-APK`** (downloads as a `.zip`).
+4. On your phone, open your **Files** app, tap the `.zip` file, tap **Extract**, then tap **`app-debug.apk`** to install.
 
 ---
 
